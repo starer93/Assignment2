@@ -6,6 +6,9 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Assignment_2.Models;
+using System.Data.Entity;
+using Assignment_2.SAL;
 
 namespace Assignment_2
 {
@@ -23,6 +26,9 @@ namespace Assignment_2
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            Database.SetInitializer<ReportContext>
+                (new DropCreateDatabaseIfModelChanges<ReportContext>());
         }
     }
 }

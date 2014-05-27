@@ -6,7 +6,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EE703A30-C43E-4D92-82AA-D9D74AF4C6F7}</ProjectGuid>
+    <ProjectGuid>{D6F9FC96-95F1-4217-99B8-231081885FE7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Assignment_2.Tests</RootNamespace>
@@ -124,7 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Assignment 2\Assignment 2.csproj">
-      <Project>{AFAD8B91-A5D1-4D8A-816F-67C3EFAB8688}</Project>
+      <Project>{498856AE-A505-4B9D-9F99-FA2733C6A4D2}</Project>
       <Name>Assignment 2</Name>
     </ProjectReference>
   </ItemGroup>

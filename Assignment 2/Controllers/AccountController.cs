@@ -19,7 +19,8 @@ namespace Assignment_2.Controllers
     {
         //
         // GET: /Account/Login
-
+        UsersContext userContext = new UsersContext();
+        
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -37,7 +38,18 @@ namespace Assignment_2.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
-                return RedirectToLocal(returnUrl);
+                var role = from r in userContext.UserProfiles
+                           where r.UserName == model.UserName
+                           select r;
+                List<UserProfile> UserRoles = role.ToList();
+                string s = UserRoles.First().Role.ToString();
+                switch (s)
+                {
+                    case "Consultant": return RedirectToAction("Index", "Consultant");
+                    case "Department Supervisor": return RedirectToAction("Index", "DepartmentSupervisor");
+                    case "Account Staff": return RedirectToAction("Index", "AccountStaff");
+                    default: return RedirectToAction("Index", "Home");
+                }
             }
 
             // If we got this far, something failed, redisplay form
@@ -79,9 +91,15 @@ namespace Assignment_2.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new{Role = model.Role});
                     WebSecurity.Login(model.UserName, model.Password);
-                    return RedirectToAction("Index", "Home");
+                   switch(model.Role)
+                   {
+                       case "Consultant": return RedirectToAction("Index", "Consultant");
+                       case "Department Supervisor": return RedirectToAction("Index", "DepartmentSupervisor");
+                       case "Account Staff": return RedirectToAction("Index", "AccountStaff");
+                       default: return RedirectToAction("Index", "Home");
+                   }
                 }
                 catch (MembershipCreateUserException e)
                 {

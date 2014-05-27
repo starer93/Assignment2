@@ -1,0 +1,38 @@
+﻿@model Assignment_2.Models.Expense
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create Report</h2>
+
+
+<input id="FileUpload" type="file" />
+<fieldset>
+    <legend>Report</legend>
+
+    <div class="display-label">
+         @Html.DisplayFor(model => model.Id)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Amount)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayFor(model => model.Description)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Location)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayFor(model => model.Date)
+    </div>
+</fieldset>
+
+<div>
+    @Html.ActionLink("Add Expense", "CreateExpense")
+</div>
+
+<input id="BtnSubmit" type="button" value="Submit" />
+<input type="button" value="Back" onclick="@("window.location.href='" + @Url.Action("Index", "Consultant") + "'") ;" />

@@ -25,6 +25,7 @@ namespace Assignment_2.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         public string UserName { get; set; }
+        public string Role { get; set; }
     }
 
     public class RegisterExternalLoginModel
@@ -66,6 +67,8 @@ namespace Assignment_2.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        public string Role { get; set; }
+
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
     }
@@ -86,6 +89,9 @@ namespace Assignment_2.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        
+        [Required]
+        public string Role { get; set; }
     }
 
     public class ExternalLogin
