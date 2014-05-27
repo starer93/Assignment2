@@ -12,16 +12,125 @@ namespace Assignment_2.Controllers
 {
     public class ReportController : Controller
     {
-        private ReportContext db = new ReportContext();
+        #region DataAccess
+        public IReportDataAccess reportDataAccess = new SqlReportDataAccess();
 
+        public interface IReportDataAccess
+        {
+
+            List<Report> GetAllReports();
+            Report FindReportByPrimaryKey(int id);
+            void AddReport(Report report);
+            void SaveChanges();
+            void ChangeState(Report report, EntityState state);
+            void RemoveReport(Report report);
+            void Dispose();
+        }
+
+        public class MockReportDataAccess : IReportDataAccess
+        {
+            private List<Report> reports;
+
+            public MockReportDataAccess()
+            {
+                reports = new List<Report>();
+            }
+
+            public List<Report> GetAllReports()
+            {
+                return reports;
+            }
+
+            public Report FindReportByPrimaryKey(int id)
+            {
+                return reports.FirstOrDefault(x => x.Id == id);
+
+                //Report report = new Report();
+                //report.Id = 15;
+                //if (id == 15)
+                //{
+                //    return report;
+                //}
+                //else
+                //    return null;
+            }
+
+            public void AddReport(Report report)
+            {
+                reports.Add(report);
+            }
+
+            public void SaveChanges()
+            {
+                //db.SaveChanges();
+            }
+
+            public void ChangeState(Report report, EntityState state)
+            {
+                //db.Entry(report).State = state;
+            }
+
+            public void RemoveReport(Report report)
+            {
+                //db.Reports.Remove(report);
+            }
+
+            public void Dispose()
+            {
+                //db.Dispose();
+            }
+        }
+
+        public class SqlReportDataAccess : IReportDataAccess
+        {
+            ReportContext db = new ReportContext();
+
+            public List<Report> GetAllReports()
+            {
+                return db.Reports.ToList();
+            }
+            public Report FindReportByPrimaryKey(int id)
+            {
+                return db.Reports.Find(id);
+            }
+            public void AddReport(Report report)
+            {
+                db.Reports.Add(report);
+            }
+            public void SaveChanges()
+            {
+                db.SaveChanges();
+            }
+            public void ChangeState(Report report, EntityState state)
+            {
+                db.Entry(report).State = state;
+            }
+            public void RemoveReport(Report report)
+            {
+                db.Reports.Remove(report);
+            }
+            public void Dispose()
+            {
+                db.Dispose();
+            }
+        }
+        #endregion
+        public ReportController(IReportDataAccess dataAccess)
+        {
+            reportDataAccess = dataAccess;
+        }
+        public ReportController()
+        {
+
+        }
         //
         // GET: /Report/
 
         public ActionResult Index()
         {
-            List<Report> reportList = db.Reports.ToList();
+            List<Report> reportList = reportDataAccess.GetAllReports();
             List<Report> filteredReports = new List<Report>();
-            
+
             foreach (Report report in reportList)
             {
                 if (report.ConsultantID.Equals(User.Identity.Name))
@@ -37,7 +146,7 @@ namespace Assignment_2.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            Report report = db.Reports.Find(id);
+            Report report = reportDataAccess.FindReportByPrimaryKey(id);
             if (report == null)
             {
                 return HttpNotFound();
@@ -61,8 +170,8 @@ namespace Assignment_2.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Reports.Add(report);
-                db.SaveChanges();
+                reportDataAccess.AddReport(report);
+                reportDataAccess.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -74,7 +183,7 @@ namespace Assignment_2.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            Report report = db.Reports.Find(id);
+            Report report = reportDataAccess.FindReportByPrimaryKey(id);
             if (report == null)
             {
                 return HttpNotFound();
@@ -90,8 +199,8 @@ namespace Assignment_2.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(report).State = EntityState.Modified;
-                db.SaveChanges();
+                reportDataAccess.ChangeState(report, EntityState.Modified);
+                reportDataAccess.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(report);
@@ -102,7 +211,7 @@ namespace Assignment_2.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            Report report = db.Reports.Find(id);
+            Report report = reportDataAccess.FindReportByPrimaryKey(id);
             if (report == null)
             {
                 return HttpNotFound();
@@ -116,15 +225,15 @@ namespace Assignment_2.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Report report = db.Reports.Find(id);
-            db.Reports.Remove(report);
-            db.SaveChanges();
+            Report report = reportDataAccess.FindReportByPrimaryKey(id);
+            reportDataAccess.RemoveReport(report);
+            reportDataAccess.SaveChanges();
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            reportDataAccess.Dispose();
             base.Dispose(disposing);
         }
     }

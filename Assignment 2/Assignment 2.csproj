@@ -322,9 +322,6 @@
     <Content Include="Views\Consultant\Index.cshtml" />
     <Content Include="Views\AccountStaff\Index.cshtml" />
     <Content Include="Views\DepartmentSupervisor\Index.cshtml" />
-    <Content Include="Views\Consultant\CreateReport.cshtml" />
-    <Content Include="Views\Consultant\Details.cshtml" />
-    <Content Include="Views\Consultant\CreateExpense.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

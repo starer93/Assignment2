@@ -89,9 +89,10 @@ namespace Assignment_2.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-        
+
         [Required]
-        public string Role { get; set; }
+        public String Role { get; set; }
+        //public List<Roles> Roles { get; set; }
     }
 
     public class ExternalLogin
