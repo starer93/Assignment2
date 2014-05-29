@@ -56,6 +56,14 @@ namespace Assignment_2.Controllers
         [HttpPost]
         public ActionResult Create(Report report, HttpPostedFileBase file)
         {
+            if (file.ContentLength > 0)
+            {
+                int length = file.ContentLength;
+                byte[] fileData = new byte[length];
+                file.InputStream.Read(fileData, 0, length);
+                report.Receipt = fileData;
+            }
+
             if (ModelState.IsValid)
             {
                 reportDataAccess.AddReport(report);
@@ -64,6 +72,11 @@ namespace Assignment_2.Controllers
             }
 
             return View(report);
+        }
+
+        public ActionResult Details(int id)
+        {
+            return RedirectToAction("Details", "Report", id);
         }
     }
 }

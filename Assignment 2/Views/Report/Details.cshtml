@@ -29,6 +29,9 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Date)
     </div>
+    <div class="display-field">
+        @Html.ActionLink("Show Receipt", "ShowReceipt");
+    </div>
 </fieldset>
 
 <table>
@@ -57,5 +60,5 @@
 </table>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "ReturnToCorrectIndex")
 </p>

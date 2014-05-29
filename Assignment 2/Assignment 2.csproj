@@ -181,6 +181,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Business Logic\DepartmentLogic.cs" />
+    <Compile Include="Business Logic\DepartmentSupervisorLogic.cs" />
+    <Compile Include="Business Logic\ReportLogic.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccountStaffController.cs" />
     <Compile Include="Controllers\ConsultantController.cs" />

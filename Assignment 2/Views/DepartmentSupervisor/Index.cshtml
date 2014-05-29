@@ -2,4 +2,37 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Department Supervisor</h2>
+<p>Welcome @ViewBag.Username</p>
+<br />
+<h3>Department Information</h3>
+<table border="1">
+    <tr>
+        <td class="auto-style2">Department Name</td>
+        <td>
+            @ViewBag.DepartmentName
+        </td>
+    </tr>
+    <tr>
+        <td class="auto-style2">Department Budget
+        </td>
+        <td>
+            $@ViewBag.DepartmentBudget
+        </td>
+    </tr>
+    <tr>
+        <td class="auto-style2">Remaining Budget
+        </td>
+        <td>
+            $@ViewBag.RemainingBudget
+        </td>
+    </tr>
+    <tr>
+        <td class="auto-style2">Expense Reports Approved
+        </td>
+        <td>
+            $@ViewBag.ExpenseReportApproved
+        </td>
+    </tr>
+ </table>
+@ViewBag.test

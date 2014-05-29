@@ -23,6 +23,27 @@ namespace Assignment_2.Controllers
 
         }
 
+        public ActionResult ReturnToCorrectIndex()
+        {
+            if (User.IsInRole("Consultant"))
+            {
+                return RedirectToAction("Index", "Consultant");
+            }
+            else if (User.IsInRole("Department Supervisor"))
+            {
+                return RedirectToAction("Index", "DepartmentSupervisor");
+            }
+            else if (User.IsInRole("Account Staff"))
+            {
+                return RedirectToAction("Index", "AccountStaff");
+            }
+            else
+            {
+                return View();
+            }
+
+        }
+
         //
         // GET: /Report/
 
@@ -52,6 +73,11 @@ namespace Assignment_2.Controllers
                 return HttpNotFound();
             }
             return View(report);
+        }
+
+        public ActionResult ShowReceipt()
+        {
+            return View();
         }
 
         //
