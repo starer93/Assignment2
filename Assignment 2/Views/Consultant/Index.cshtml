@@ -1,5 +1,71 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@model IEnumerable<Assignment_2.Models.Report>
+
+@{
+    ViewBag.Title = "Consultant";
 }
 
-<h2>Index</h2>
+<h2>Consultant</h2>
+
+<p>
+    @Html.ActionLink("Create New Report", "Create", "Report")
+</p>
+
+<p>
+    
+
+@*  
+    @Html.RadioButton("Status", Model)
+      @Html.RadioButton("rbSupervisorApprovedReports", "Supervisor Approved Reports")
+    @Html.RadioButton("rbAccountStaffApprovedReports", "Account Staff Approved Reports")
+    @Html.RadioButton("rbPendingReports", "Pending Reports")*@
+</p>
+
+
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Receipt)
+        </th>
+    </tr>
+
+
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @if (item.Receipt != null)
+            {
+                //@Html.DisplayFor(modelItem => item.Receipt)
+                <b>True</b>
+            }
+            else
+            {
+                <b>False</b>
+            }
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id = item.Id })
+        </td>
+    </tr>
+}
+
+</table>

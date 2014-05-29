@@ -6,18 +6,19 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Uploadfile", "Report"))
+{
     @Html.ValidationSummary(true)
 
     <fieldset>
         <legend>Report</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ConsultantID)
+            @Html.LabelFor(model => model.ConsultantId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.ConsultantID)
-            @Html.ValidationMessageFor(model => model.ConsultantID)
+            @Html.EditorFor(model => model.ConsultantId)
+            @Html.ValidationMessageFor(model => model.ConsultantId)
         </div>
 
         <div class="editor-label">
@@ -36,11 +37,25 @@
             @Html.ValidationMessageFor(model => model.Date)
         </div>
 
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Receipt)
+        </div>
+        <div class="editor-field">
+            <!-- this input is not processing receipt properly -->
+            @Html.HiddenFor(model => model.Receipt)
+            @Html.ValidationMessageFor(model => model.Receipt)
+            <input type="file" value="Receipt" />
+        </div>
         <p>
             <input type="submit" value="Create" />
         </p>
     </fieldset>
 }
+
+<div>
+    @Html.ActionLink("Add Expenses", "Create", "Expense");
+
+</div>
 
 <div>
     @Html.ActionLink("Back to List", "Index")

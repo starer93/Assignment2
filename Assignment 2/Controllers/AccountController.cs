@@ -48,7 +48,7 @@ namespace Assignment_2.Controllers
                     case "Consultant": return RedirectToAction("Index", "Consultant");
                     case "Department Supervisor": return RedirectToAction("Index", "DepartmentSupervisor");
                     case "Account Staff": return RedirectToAction("Index", "AccountStaff");
-                    default: return RedirectToAction("Index", "Home");
+                    default: return RedirectToAction("Login", "Account");
                 }
             }
 
@@ -66,7 +66,7 @@ namespace Assignment_2.Controllers
         {
             WebSecurity.Logout();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
         //
@@ -98,7 +98,7 @@ namespace Assignment_2.Controllers
                        case "Consultant": return RedirectToAction("Index", "Consultant");
                        case "Department Supervisor": return RedirectToAction("Index", "DepartmentSupervisor");
                        case "Account Staff": return RedirectToAction("Index", "AccountStaff");
-                       default: return RedirectToAction("Index", "Home");
+                       default: return RedirectToAction("Login", "Account");
                    }
                 }
                 catch (MembershipCreateUserException e)

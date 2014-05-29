@@ -12,7 +12,7 @@
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ConsultantID)
+            @Html.DisplayNameFor(model => model.ConsultantId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Status)
@@ -20,19 +20,33 @@
         <th>
             @Html.DisplayNameFor(model => model.Date)
         </th>
-        <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.Receipt)
+        </th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.ConsultantID)
+            @Html.DisplayFor(modelItem => item.ConsultantId)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Status)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            <!-- get name of receipt and display here -->
+            @if (item.Receipt != null)
+            {
+                <b>True</b>
+            }
+            else 
+            {
+                <b>False</b>
+            }
+            <!-- Html.DisplayFor(modelItem => item.Receipt.ToString()) -->
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

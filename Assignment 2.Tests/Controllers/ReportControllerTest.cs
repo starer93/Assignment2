@@ -11,10 +11,10 @@ namespace Assignment_2.Tests.Controllers
         [TestMethod]
         public void TestReturnAllReportsReturnsReports()
         {
-            ReportController.MockReportDataAccess mockReportDataAccess = new ReportController.MockReportDataAccess();
-            
+            //ReportController.MockReportDataAccess mockReportDataAccess = new ReportController.MockReportDataAccess();
+            MockReportDataAccess mockReportDataAccess = new MockReportDataAccess();
             Report report = new Report();
-            report.ConsultantID = "125";
+            report.ConsultantId = "125";
             report.Date = "11/05/2014";
             report.Status = "SubmittedByConsultant";
             mockReportDataAccess.AddReport(report);
@@ -29,18 +29,19 @@ namespace Assignment_2.Tests.Controllers
         [TestMethod]
         public void TestReturnAllReports_GivenMultipleReports_ReturnsReports()
         {
-            ReportController.MockReportDataAccess mockReportDataAccess = new ReportController.MockReportDataAccess();
+            //ReportController.MockReportDataAccess mockReportDataAccess = new ReportController.MockReportDataAccess();
+            MockReportDataAccess mockReportDataAccess = new MockReportDataAccess();
 
             mockReportDataAccess.AddReport(new Report
             {
-                ConsultantID = "125",
+                ConsultantId = "125",
                 Date = "11/05/2014",
                 Status = "SubmittedByConsultant"
             });
 
             mockReportDataAccess.AddReport(new Report
             {
-                ConsultantID = "125",
+                ConsultantId = "125",
                 Date = "11/05/2014",
                 Status = "SubmittedByConsultant"
             });

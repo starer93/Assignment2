@@ -10,10 +10,10 @@
     <legend>Report</legend>
 
     <div class="display-label">
-         @Html.DisplayNameFor(model => model.ConsultantID)
+         @Html.DisplayNameFor(model => model.ConsultantId)
     </div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.ConsultantID)
+        @Html.DisplayFor(model => model.ConsultantId)
     </div>
 
     <div class="display-label">
@@ -30,6 +30,31 @@
         @Html.DisplayFor(model => model.Date)
     </div>
 </fieldset>
+
+<table>
+@foreach (var item in Model.Expenses) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Amount)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
