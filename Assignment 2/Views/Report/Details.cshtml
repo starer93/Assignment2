@@ -1,41 +1,62 @@
 ﻿@model Assignment_2.Models.Report
-
+<!-- Report: Details
+    showing report info and its attached expenses -->
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Report: Details";
 }
 
-<h2>Details</h2>
-
-<fieldset>
-    <legend>Report</legend>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.ConsultantId)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.ConsultantId)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Status)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Status)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Date)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Date)
-    </div>
-    <div class="display-field">
-        @Html.ActionLink("Show Receipt", "ShowReceipt");
-    </div>
-</fieldset>
+<h2>Report: Details</h2>
 
 <table>
-@foreach (var item in Model.Expenses) {
+   <tr>
+        <th>
+            <b>ConsultantId</b>
+        </th>
+        <th>
+            <b>Status</b>
+        </th>
+        <th>
+            <b>Date</b>
+        </th>
+        <th>
+            <b>Receipt</b>
+        </th>
+
+    </tr>
+    <tr>
+        <td>
+             @Html.DisplayFor(model => model.ConsultantId)
+        </td>
+        <td>
+             @Html.DisplayFor(model => model.Status)
+        </td>
+        <td>
+             @Html.DisplayFor(model => model.Date)
+        </td>
+        <td>
+             @Html.ActionLink("Show Receipt", "ShowReceipt");
+        </td>
+    </tr>
+</table>
+
+<table>
+    <tr>
+        <th>
+            <b>Date</b>
+        </th>
+        <th>
+            <b>Description</b>
+        </th>
+        <th>
+            <b>Location</b>
+        </th>
+        <th>
+            <b>Amount</b>
+        </th>
+    </tr>
+
+@foreach (var item in Model.Expenses)
+{
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Date)
@@ -49,16 +70,10 @@
         <td>
             @Html.DisplayFor(modelItem => item.Amount)
         </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
     </tr>
 }
-
 </table>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
     @Html.ActionLink("Back to List", "ReturnToCorrectIndex")
 </p>

@@ -37,21 +37,15 @@
             @Html.DisplayFor(modelItem => item.Date)
         </td>
         <td>
-            <!-- get name of receipt and display here -->
             @if (item.Receipt != null)
             {
                 <b>True</b>
+                @Html.ActionLink("Download", "DownloadReceipt", new { id=item.Id })
             }
             else 
             {
-                <b>False</b>
+                <b>No Receipt</b>
             }
-            <!-- Html.DisplayFor(modelItem => item.Receipt.ToString()) -->
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>
 }

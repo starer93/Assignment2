@@ -10,112 +10,66 @@ using Assignment_2.SAL;
 
 namespace Assignment_2.Controllers
 {
+    [Authorize]
     public class ExpenseController : Controller
     {
-        private ReportContext db = new ReportContext();
+        public IReportDataAccess reportDataAccess = new SqlReportDataAccess();
 
-        //
-        // GET: /Expense/
-
-        public ActionResult Index()
-        {
-            return View(db.Expenses.ToList());
-        }
-
-        //
-        // GET: /Expense/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Expense expense = db.Expenses.Find(id);
-            if (expense == null)
-            {
-                return HttpNotFound();
-            }
-            return View(expense);
-        }
-
-        //
         // GET: /Expense/Create
-
         public ActionResult Create()
         {
             return View();
         }
 
-        //
         // POST: /Expense/Create
-
+        //adding expenses to the temporary currentExpense list
         [HttpPost]
         public ActionResult Create(Expense expense)
         {
+            //temporary holder for expenses
+            List<Expense> currentExpenses = new List<Expense>();
+
             if (ModelState.IsValid)
             {
-                db.Expenses.Add(expense);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                //if any reports exist, get last id and add 1
+                if (reportDataAccess.GetAllReports().Count() > 0)
+                {
+                    Report report = reportDataAccess.GetAllReports().Last();
+                    expense.ReportId = report.Id + 1;
+                }
+                else
+                {
+                    //otherwise this is the first report
+                    expense.ReportId = 1;
+                }
+
+                //if expense list new, store in session
+                if (Session["CurrentExpenses"] == null)
+                {
+                    currentExpenses.Add(expense);
+                }
+                else
+                {
+                    //add to currentExpense list
+                    currentExpenses = (List<Expense>)Session["CurrentExpenses"];
+                    currentExpenses.Add(expense);
+                }
+
+                Session["CurrentExpenses"] = currentExpenses;
+                
+                return RedirectToAction("Create", "Report");
             }
-
-            return View(expense);
-        }
-
-        //
-        // GET: /Expense/Edit/5
-
-        public ActionResult Edit(int id = 0)
-        {
-            Expense expense = db.Expenses.Find(id);
-            if (expense == null)
+            else
             {
-                return HttpNotFound();
+                //need message to tell user expense was not added successfully
+                //missing fields, incorrectly entered fields etc.
+                //Session["CurrentExpenses"] = null;
+                return RedirectToAction("Create", "Expense");
             }
-            return View(expense);
+
+            //reportDataAccess.AddExpense(expense);
+            //reportDataAccess.SaveChanges();
         }
 
-        //
-        // POST: /Expense/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(Expense expense)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(expense).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(expense);
-        }
-
-        //
-        // GET: /Expense/Delete/5
-
-        public ActionResult Delete(int id = 0)
-        {
-            Expense expense = db.Expenses.Find(id);
-            if (expense == null)
-            {
-                return HttpNotFound();
-            }
-            return View(expense);
-        }
-
-        //
-        // POST: /Expense/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Expense expense = db.Expenses.Find(id);
-            db.Expenses.Remove(expense);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
-        }
     }
 }

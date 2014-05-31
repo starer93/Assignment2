@@ -10,29 +10,29 @@
     <tr>
         <td class="auto-style2">Department Name</td>
         <td>
-            @ViewBag.DepartmentName
+            @ViewBag.Department.Name
         </td>
     </tr>
     <tr>
         <td class="auto-style2">Department Budget
         </td>
         <td>
-            $@ViewBag.DepartmentBudget
+            $@ViewBag.Department.getTotalBudget()
         </td>
     </tr>
     <tr>
         <td class="auto-style2">Remaining Budget
         </td>
         <td>
-            $@ViewBag.RemainingBudget
+            $@ViewBag.Department.getRemainingBudget()
         </td>
     </tr>
     <tr>
         <td class="auto-style2">Expense Reports Approved
         </td>
         <td>
-            $@ViewBag.ExpenseReportApproved
+            $@ViewBag.Department.TotalExpense()
         </td>
     </tr>
  </table>
-@ViewBag.test
+<h3>Report List</h3>

@@ -1,64 +1,68 @@
-﻿@model Assignment_2.Models.Report
+﻿@model IEnumerable<Assignment_2.Models.Expense>
+
+<!-- Report: Create
+    showing a pending list of expenses to be added in the current report -->
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Consultant: Create report";
 }
 
-<h2>Create</h2>
+<h2>Report: List of expenses</h2>
 
-@using (Html.BeginForm("Create", "Consultant", FormMethod.Post, new { EncType="multipart/form-data"}))
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+    </tr>
+
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        { 
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+
+            <td>@Html.DisplayFor(modelItem => item.Location)</td>
+
+            <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+
+            <td>@Html.DisplayFor(modelItem => item.Date)</td>
+        </tr>
+        }
+    }
+
+</table>
+
+<!-- expense list and report info is submitted here -->
+@using (Html.BeginForm())
 {
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
-
+       
     <fieldset>
         <legend>Report</legend>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.ConsultantId)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.ConsultantId)
-            @Html.ValidationMessageFor(model => model.ConsultantId)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Status)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Status)
-            @Html.ValidationMessageFor(model => model.Status)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Date)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Date)
-            @Html.ValidationMessageFor(model => model.Date)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Receipt)
-        </div>
-        <div class="editor-field">
-            <!-- this input is not processing receipt properly -->
-            @Html.HiddenFor(model => model.Receipt)
-            @Html.ValidationMessageFor(model => model.Receipt)
-            <input type="file" name="file" />
-        </div>
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="Attach Receipt" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Add Expenses", "Create", "Expense");
-
+    @Html.ActionLink("Add Expense", "Create", "Expense")
 </div>
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Your Index", "ReturnToCorrectIndex")
 </div>
 
 @section Scripts {

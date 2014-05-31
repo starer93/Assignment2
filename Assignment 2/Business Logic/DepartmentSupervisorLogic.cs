@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Assignment_2.Controllers;
 using Assignment_2.Models;
 
 namespace Assignment_2.Business_Logic
 {
     public class DepartmentSupervisorLogic
     {
-        public IReportDataAccess reportDataAccess = new SqlReportDataAccess();
         public string Username { get; private set; }
         public DepartmentLogic Department { get; private set; }
         public DepartmentSupervisorLogic(string username)

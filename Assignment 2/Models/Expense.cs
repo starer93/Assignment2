@@ -12,7 +12,7 @@ namespace Assignment_2.Models
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { set; get; }
-
+        public int ReportId { set; get;}
         public string Date { set; get; }
         public string Description { set; get; }
         public string Location { set; get; }

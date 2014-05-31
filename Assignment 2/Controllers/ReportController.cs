@@ -10,6 +10,7 @@ using Assignment_2.SAL;
 
 namespace Assignment_2.Controllers
 {
+    [Authorize]
     public class ReportController : Controller
     {
         public IReportDataAccess reportDataAccess = new SqlReportDataAccess();
@@ -18,13 +19,72 @@ namespace Assignment_2.Controllers
         {
             reportDataAccess = dataAccess;
         }
+
         public ReportController()
         {
 
         }
 
+        //GET: Report/Create
+        //1. show a list of the current expenses in new report
+        public ActionResult Create()
+        {
+            List<Expense> currentExpenses = new List<Expense>();
+            currentExpenses = (List<Expense>)Session["CurrentExpenses"];
+            return View(currentExpenses);
+        }
+
+        // POST:
+        //2. once weve added all the expenses we want, we build the rest of the report
+        [HttpPost]
+        public ActionResult Create(Report report)
+        {
+            report.ConsultantId = User.Identity.Name;
+            report.Date = DateTime.Today.ToString("dd/MM/yyyy");
+            report.Status = "SubmittedByConsultant";
+            report.Expenses = (List<Expense>)Session["CurrentExpenses"];
+
+            if (ModelState.IsValid)
+            {
+                reportDataAccess.AddReport(report);
+                return RedirectToAction("AttachReceipt");
+            }
+
+            return View(report);
+        }
+
+        //GET: /Report/AttachReceipt
+        //3. show file upload control for uploading receipts
+        public ActionResult AttachReceipt()
+        {
+            return View();
+        }
+
+        // OTHER METHODS ===============================
+
+        // GET: /Report/Details/5
+        //(a) get the report details of the selected report
+        public ActionResult Details(int id)
+        {
+            Report report = reportDataAccess.FindReportByPrimaryKey(id);
+            if (report == null)
+            {
+                return HttpNotFound();
+            }
+            return View(report);
+        }
+
+        //(b)downloads receipt from reports.Receipt
+        public ActionResult ShowReceipt()
+        {
+            return View();
+        }
+
+        //(c)used by all users if they want to return to their base index
         public ActionResult ReturnToCorrectIndex()
         {
+            Session["CurrentExpenses"] = null;
+
             if (User.IsInRole("Consultant"))
             {
                 return RedirectToAction("Index", "Consultant");
@@ -39,128 +99,17 @@ namespace Assignment_2.Controllers
             }
             else
             {
+                //unreachable code
                 return View();
             }
-
         }
 
-        //
-        // GET: /Report/
-
-        public ActionResult Index()
-        {
-            List<Report> reportList = reportDataAccess.GetAllReports();
-            List<Report> filteredReports = new List<Report>();
-
-            foreach (Report report in reportList)
-            {
-                if (report.ConsultantId.Equals(User.Identity.Name))
-                {
-                    filteredReports.Add(report);
-                }
-            }
-            return View(filteredReports);
-        }
-
-        //
-        // GET: /Report/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Report report = reportDataAccess.FindReportByPrimaryKey(id);
-            if (report == null)
-            {
-                return HttpNotFound();
-            }
-            return View(report);
-        }
-
-        public ActionResult ShowReceipt()
-        {
-            return View();
-        }
-
-        //
-        // GET: /Report/Create
-
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Report/Create
-
-        [HttpPost]
-        public ActionResult Create(Report report)
-        {
-            if (ModelState.IsValid)
-            {
-                reportDataAccess.AddReport(report);
-                reportDataAccess.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(report);
-        }
-
-        //
-        // GET: /Report/Edit/5
-
-        public ActionResult Edit(int id = 0)
-        {
-            Report report = reportDataAccess.FindReportByPrimaryKey(id);
-            if (report == null)
-            {
-                return HttpNotFound();
-            }
-            return View(report);
-        }
-
-        //
-        // POST: /Report/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(Report report)
-        {
-            if (ModelState.IsValid)
-            {
-                reportDataAccess.ChangeState(report, EntityState.Modified);
-                reportDataAccess.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(report);
-        }
-
-        //
-        // GET: /Report/Delete/5
-
-        public ActionResult Delete(int id = 0)
-        {
-            Report report = reportDataAccess.FindReportByPrimaryKey(id);
-            if (report == null)
-            {
-                return HttpNotFound();
-            }
-            return View(report);
-        }
-
-        //
-        // POST: /Report/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Report report = reportDataAccess.FindReportByPrimaryKey(id);
-            reportDataAccess.RemoveReport(report);
-            reportDataAccess.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
+        //(d)why?
         protected override void Dispose(bool disposing)
         {
             reportDataAccess.Dispose();
             base.Dispose(disposing);
         }
+
     }
 }

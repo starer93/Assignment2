@@ -13,11 +13,16 @@ namespace Assignment_2.Controllers
     public interface IReportDataAccess
     {
         List<Report> GetAllReports();
+        List<Expense> GetAllExpenses();
         Report FindReportByPrimaryKey(int id);
         void AddReport(Report report);
+        //tuan added this method for efficiency
+        void AddAllExpenses(List<Expense> expenses);
+        void AddExpense(Expense expense);
         void SaveChanges();
         void ChangeState(Report report, EntityState state);
         void RemoveReport(Report report);
+        void RemoveExpense(Expense expense);
         void Dispose();
     }
 
@@ -29,14 +34,33 @@ namespace Assignment_2.Controllers
         {
             return db.Reports.ToList();
         }
+
+        public List<Expense> GetAllExpenses()
+        {
+            return db.Expenses.ToList();
+        }
         public Report FindReportByPrimaryKey(int id)
         {
             return db.Reports.Find(id);
+        }
+
+        public void AddExpense(Expense expense)
+        {
+            db.Expenses.Add(expense);
         }
         public void AddReport(Report report)
         {
             db.Reports.Add(report);
         }
+
+        public void AddAllExpenses(List<Expense> expenses)
+        {
+            foreach (Expense expense in expenses)
+            {
+                db.Expenses.Add(expense);
+            }
+        }
+        
         public void SaveChanges()
         {
             db.SaveChanges();
@@ -49,6 +73,12 @@ namespace Assignment_2.Controllers
         {
             db.Reports.Remove(report);
         }
+
+        public void RemoveExpense(Expense expense)
+        {
+            db.Expenses.Remove(expense);
+        }
+
         public void Dispose()
         {
             db.Dispose();
@@ -58,15 +88,22 @@ namespace Assignment_2.Controllers
     public class MockReportDataAccess : IReportDataAccess
     {
         private List<Report> reports;
+        private List<Expense> expenses;
 
         public MockReportDataAccess()
         {
             reports = new List<Report>();
+            expenses = new List<Expense>();
         }
 
         public List<Report> GetAllReports()
         {
             return reports;
+        }
+
+        public List<Expense> GetAllExpenses()
+        {
+            return expenses;
         }
 
         public Report FindReportByPrimaryKey(int id)
@@ -88,6 +125,19 @@ namespace Assignment_2.Controllers
             reports.Add(report);
         }
 
+        public void AddAllExpenses(List<Expense> expenses)
+        {
+            foreach (Expense expense in expenses)
+            {
+                expenses.Add(expense);
+            }
+        }
+
+        public void AddExpense(Expense expense)
+        {
+            expenses.Add(expense);
+        }
+
         public void SaveChanges()
         {
             //db.SaveChanges();
@@ -101,6 +151,11 @@ namespace Assignment_2.Controllers
         public void RemoveReport(Report report)
         {
             //db.Reports.Remove(report);
+        }
+
+        public void RemoveExpense(Expense expense)
+        {
+           //
         }
 
         public void Dispose()

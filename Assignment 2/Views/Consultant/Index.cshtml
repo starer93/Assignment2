@@ -1,25 +1,15 @@
 ﻿@model IEnumerable<Assignment_2.Models.Report>
 
 @{
-    ViewBag.Title = "Consultant";
+    ViewBag.Title = "Consultant : Index";
 }
 
-<h2>Consultant</h2>
+<h2>Consultant: List of reports</h2>
 
+<!-- we create report by adding expenses to it first -->
 <p>
-    @Html.ActionLink("Create New Report", "Create", "Report")
+    @Html.ActionLink("Create New Report", "Create", "Expense")
 </p>
-
-<p>
-    
-
-@*  
-    @Html.RadioButton("Status", Model)
-      @Html.RadioButton("rbSupervisorApprovedReports", "Supervisor Approved Reports")
-    @Html.RadioButton("rbAccountStaffApprovedReports", "Account Staff Approved Reports")
-    @Html.RadioButton("rbPendingReports", "Pending Reports")*@
-</p>
-
 
 <table>
     <tr>
@@ -36,8 +26,6 @@
             @Html.DisplayNameFor(model => model.Receipt)
         </th>
     </tr>
-
-
 
 @foreach (var item in Model)
 {

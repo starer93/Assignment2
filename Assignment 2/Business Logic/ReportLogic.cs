@@ -15,6 +15,14 @@ namespace Assignment_2.Business_Logic
             ReportModel = reportModel;
         }
 
-
+        public double calculateExpenses()
+        {
+            double sum = 0;
+            foreach (Expense expense in ReportModel.Expenses)
+            {
+                sum += expense.Amount;
+            }
+            return sum;
+        }
     }
 }

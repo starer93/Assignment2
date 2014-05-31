@@ -1,10 +1,10 @@
 ﻿@model Assignment_2.Models.Expense
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Consultant: Add expenses to report";
 }
 
-<h2>Create</h2>
+<h2>Consultant: Adding new expense to report</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
@@ -51,9 +51,13 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Reports List", "Index", "Consultant")
 </div>
 
+<!-- expenses will not be saved here -->
+<div>
+    @Html.ActionLink("Continue to Current Report", "Create", "Report")
+</div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

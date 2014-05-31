@@ -9,6 +9,7 @@ namespace Assignment_2.Models
     {
         public int Id{set; get;}
         public string ConsultantId { set; get; }
+        public string ApprovedBy { set; get; }
         public string Status { set; get; }
         public string Date { set; get; }
         public byte[] Receipt { get; set; }

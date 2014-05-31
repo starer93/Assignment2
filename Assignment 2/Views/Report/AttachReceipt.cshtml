@@ -1,0 +1,35 @@
+﻿@model Assignment_2.Models.Report
+
+@{
+    ViewBag.Title = "Consultant: Attach receipt to report";
+}
+
+<h2>Report: Attach Receipt</h2>
+
+@using (Html.BeginForm("Create", "Consultant", FormMethod.Post, new { EncType="multipart/form-data"}))
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Report</legend>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Receipt)
+        </div>
+        <div class="editor-field">
+            @Html.HiddenFor(model => model.Receipt)
+            @Html.ValidationMessageFor(model => model.Receipt)
+            <input type="file" name="file" />
+        </div>
+        <p>
+            <input type="submit" value="Submit Report" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List of Expenses", "Create", "Report");
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

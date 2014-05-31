@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Assignment_2.Models.Supervisor>
+@{
+    ViewBag.Title = "CompanyDetail";
+}
+
+<h2>Company Budgets</h2>
+<table>
+    <tr>
+        <th>
+           State Services
+        </th>
+        <th>
+           Logistics Services
+        </th>
+        <th>
+           Higher Education
+        </th>
+        <th>
+           Total
+        </th>
+    </tr>
+    <tr>
+        <th>
+            @ViewBag.StateServices
+        </th>
+        <th>
+            @ViewBag.LogisticsServices
+        </th>
+        <th>
+            @ViewBag.HigherEducationServices
+        </th>
+         <th>
+           @ViewBag.Total
+        </th>
+    </tr>
+</table>
+
+<h2>Supervisors Detail</h2>
+<table>
+    <tr>
+    <th>
+        Usernmame
+    </th>
+    <th>
+        Approved Amount
+    </th>
+        </tr>
+    @foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApprovedBudget)
+        </td>
+    </tr>
+}
+
+</table>
+
+

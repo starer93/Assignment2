@@ -1,5 +1,26 @@
-﻿@{
+﻿@model IEnumerable<Assignment_2.Models.Report>
+@{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Account Staff</h2>
+
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Receipt)
+        </th>
+    </tr>
+
+</table>
+
+@Html.ActionLink("Supervisor Approved Amount", "CompanyDetail")

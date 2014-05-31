@@ -12,8 +12,6 @@ namespace Assignment_2.Controllers
     [Authorize(Roles = "Consultant")]
     public class ConsultantController : Controller
     {
-        //
-        // GET: /Consultant/
         public IReportDataAccess reportDataAccess = new SqlReportDataAccess();
 
         public ConsultantController(IReportDataAccess dataAccess)
@@ -25,19 +23,16 @@ namespace Assignment_2.Controllers
         {
         }
 
-
-        
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
-
-        
+        //
+        // GET: /Consultant/Index
         public ActionResult Index()
         {
+            CheckDataBase(); // not sure this is working well
+
             List<Report> reportList = reportDataAccess.GetAllReports();
             List<Report> filteredReports = new List<Report>();
 
+            //filter reports by consultant name
             foreach (Report report in reportList)
             {
                 if (report.ConsultantId.Equals(User.Identity.Name))
@@ -48,14 +43,45 @@ namespace Assignment_2.Controllers
             return View(filteredReports);
         }
 
-        public ActionResult Create()
+        //clears out spare expenses that aren't attached to any report
+        private void CheckDataBase()
         {
-            return View();
+            List<Expense> expenses = reportDataAccess.GetAllExpenses();
+            foreach (Expense expense in expenses)
+            {
+                if (reportDataAccess.FindReportByPrimaryKey(expense.ReportId) == null)
+                {
+                    reportDataAccess.RemoveExpense(expense);
+                }
+            }
+            //reportDataAccess.Dispose();
         }
 
+        //this method should be the last method called before submitting a report
+        //i.e. after attaching a receipt, not sure this method is in the right place...
+        //Create, Consultant
         [HttpPost]
         public ActionResult Create(Report report, HttpPostedFileBase file)
         {
+            //initialising report data
+            report.ConsultantId = User.Identity.Name;
+            report.Date = DateTime.Today.ToString("dd/MM/yyyy");
+            report.Status = "SubmittedByConsultant";
+
+            List<Expense> currentExpenses = (List<Expense>)Session["CurrentExpenses"];
+
+            //checking current expense session
+            if (currentExpenses != null)
+            {
+                report.Expenses = currentExpenses;
+            }
+            //else
+            //{
+            //    //no expenses exist, do not continue 
+            //    return RedirectToAction("Index");
+            //}
+
+            //checking receipt upload
             if (file.ContentLength > 0)
             {
                 int length = file.ContentLength;
@@ -64,19 +90,24 @@ namespace Assignment_2.Controllers
                 report.Receipt = fileData;
             }
 
+            //save to db if all report fields have valid values
             if (ModelState.IsValid)
             {
                 reportDataAccess.AddReport(report);
+                reportDataAccess.AddAllExpenses(currentExpenses);
                 reportDataAccess.SaveChanges();
-                return RedirectToAction("Index");
+                //does this method save expenses?
             }
 
-            return View(report);
+            //empty the session
+            Session["CurrentExpenses"] = null;
+            return RedirectToAction("Index");
         }
 
-        public ActionResult Details(int id)
-        {
-            return RedirectToAction("Details", "Report", id);
-        }
+        
+        //public ActionResult Details(int id)
+        //{
+        //    return RedirectToAction("Details", "Report", id);
+        //}
     }
 }
