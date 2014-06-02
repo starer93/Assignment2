@@ -6,7 +6,9 @@
 
 <h2>Consultant: Adding new expense to report</h2>
 
-@using (Html.BeginForm()) {
+
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
 
     <fieldset>
@@ -43,6 +45,23 @@
             @Html.EditorFor(model => model.Amount)
             @Html.ValidationMessageFor(model => model.Amount)
         </div>
+
+        <div class="editor-label">
+            <p>Currency</p>
+        </div>
+
+        <!-- if time format correctly -->
+        <ul>
+            <li>  
+                <input type="radio" value="AUD" name="currency" checked="checked" />AUD
+            </li>
+            <li>
+                <input type="radio" value="CNY" name="currency"  />CNY
+            </li>
+            <li>
+                <input type="radio" value="EUR" name="currency" />EUR
+            </li>
+        </ul>
 
         <p>
             <input type="submit" value="Create" />

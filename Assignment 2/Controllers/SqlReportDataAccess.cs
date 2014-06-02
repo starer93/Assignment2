@@ -24,6 +24,7 @@ namespace Assignment_2.Controllers
         void RemoveReport(Report report);
         void RemoveExpense(Expense expense);
         void Dispose();
+        bool IsMock();
     }
 
     public class SqlReportDataAccess : IReportDataAccess
@@ -57,7 +58,7 @@ namespace Assignment_2.Controllers
         {
             foreach (Expense expense in expenses)
             {
-                db.Expenses.Add(expense);
+                db.Expenses.Add(expense);              
             }
         }
         
@@ -82,6 +83,11 @@ namespace Assignment_2.Controllers
         public void Dispose()
         {
             db.Dispose();
+        }
+
+        public bool IsMock()
+        {
+            return false;
         }
     }
 
@@ -161,6 +167,11 @@ namespace Assignment_2.Controllers
         public void Dispose()
         {
             //db.Dispose();
+        }
+
+        public bool IsMock()
+        {
+            return true;
         }
     }
 

@@ -1,26 +1,65 @@
-﻿@model IEnumerable<Assignment_2.Models.Report>
+﻿@model IEnumerable<Assignment_2.Models.Supervisor>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "CompanyDetail";
 }
 
-<h2>Account Staff</h2>
-
+<h2>Company Budgets</h2>
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Id)
+           State Services
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Status)
+           Logistics Services
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Date)
+           Higher Education
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Receipt)
+           Total
         </th>
     </tr>
+    <tr>
+        <th>
+            @ViewBag.StateServices
+        </th>
+        <th>
+            @ViewBag.LogisticsServices
+        </th>
+        <th>
+            @ViewBag.HigherEducationServices
+        </th>
+         <th>
+           @ViewBag.Total
+        </th>
+    </tr>
+</table>
+
+@Html.ActionLink("View Reports", "ViewReports")
+
+
+<h2>Supervisors Detail</h2>
+<table>
+    <tr>
+    <th>
+        Username
+    </th>
+    <th>
+        Approved Amount
+    </th>
+        </tr>
+    @foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApprovedBudget)
+        </td>
+    </tr>
+}
 
 </table>
 
-@Html.ActionLink("Supervisor Approved Amount", "CompanyDetail")
+

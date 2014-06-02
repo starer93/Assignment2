@@ -11,15 +11,38 @@ namespace Assignment_2.Controllers
     [Authorize(Roles = "Department Supervisor")]
     public class DepartmentSupervisorController : Controller
     {
-        DepartmentSupervisorLogic departmentSupervisor;
-
+        public IReportDataAccess reportDataAccess;
         public ActionResult Index()
         {
-            departmentSupervisor = new DepartmentSupervisorLogic(User.Identity.Name);
+            DepartmentSupervisorLogic departmentSupervisor = new DepartmentSupervisorLogic(User.Identity.Name);
             ViewBag.Username = User.Identity.Name;
             ViewBag.Department = departmentSupervisor.Department;
-            return View();
+            Session["Department Supervisor"] = departmentSupervisor;
+            List<Report> reports = departmentSupervisor.Department.getDepartmentReports();
+            return View(reports);
         }
 
+        public ActionResult Approve(int id)
+        {
+            DepartmentSupervisorLogic departmentSupervisor = (DepartmentSupervisorLogic)Session["Department Supervisor"];
+            departmentSupervisor.changeReportStatus(id, "ApprovedByDepartmentSupervisor");  
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Reject(int id)
+        {
+            DepartmentSupervisorLogic departmentSupervisor = (DepartmentSupervisorLogic)Session["Department Supervisor"];
+            departmentSupervisor.changeReportStatus(id, "RejectedByDepartmentSupervisor");
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult FilterReport(string status)
+        {
+            DepartmentSupervisorLogic departmentSupervisor = (DepartmentSupervisorLogic)Session["Department Supervisor"];
+            List<Report> reports = departmentSupervisor.Department.getDepartmentReports(status);
+            ViewBag.Username = User.Identity.Name;
+            ViewBag.Department = departmentSupervisor.Department;
+            return View("Index", reports);
+        }
     }
 }

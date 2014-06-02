@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Assignment_2.Models.Report>
+
+@{
     ViewBag.Title = "Index";
 }
 
@@ -36,3 +38,42 @@
     </tr>
  </table>
 <h3>Report List</h3>
+<table>
+    <tr>
+        <th> @Html.ActionLink("All Reports", "Index")</th>
+        <th> @Html.ActionLink("Pending Reports", "FilterReport", "DepartmentSupervisor", new { status = "SubmittedByConsultant" }, null)</th>
+        <th> @Html.ActionLink("Rejected By Account Staff", "FilterReport", "DepartmentSupervisor", new { status = "RejectedByAccountStaff" },null)</th>
+     </tr>
+</table>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+    </tr>
+@foreach (var item in Model)
+    {
+     <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", "Report", new { id = item.Id }, null)
+        </td>
+    </tr>
+}
+
+
+</table>

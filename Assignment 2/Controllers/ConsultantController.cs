@@ -13,6 +13,7 @@ namespace Assignment_2.Controllers
     public class ConsultantController : Controller
     {
         public IReportDataAccess reportDataAccess = new SqlReportDataAccess();
+        private List<Report> reportList; 
 
         public ConsultantController(IReportDataAccess dataAccess)
         {
@@ -29,7 +30,7 @@ namespace Assignment_2.Controllers
         {
             CheckDataBase(); // not sure this is working well
 
-            List<Report> reportList = reportDataAccess.GetAllReports();
+            reportList = reportDataAccess.GetAllReports();
             List<Report> filteredReports = new List<Report>();
 
             //filter reports by consultant name
@@ -75,13 +76,7 @@ namespace Assignment_2.Controllers
             {
                 report.Expenses = currentExpenses;
             }
-            //else
-            //{
-            //    //no expenses exist, do not continue 
-            //    return RedirectToAction("Index");
-            //}
 
-            //checking receipt upload
             if (file.ContentLength > 0)
             {
                 int length = file.ContentLength;
@@ -89,6 +84,12 @@ namespace Assignment_2.Controllers
                 file.InputStream.Read(fileData, 0, length);
                 report.Receipt = fileData;
             }
+            //else
+            //{
+            //    ViewBag.ErrorMessage = "please only upload pdf file";
+            //    return RedirectToAction("AttachReceipt", "Report");
+            //}
+
 
             //save to db if all report fields have valid values
             if (ModelState.IsValid)
@@ -104,10 +105,22 @@ namespace Assignment_2.Controllers
             return RedirectToAction("Index");
         }
 
-        
-        //public ActionResult Details(int id)
-        //{
-        //    return RedirectToAction("Details", "Report", id);
-        //}
+
+        public ActionResult FilterReport(string status)
+        {
+            reportList = reportDataAccess.GetAllReports();
+            List<Report> filteredReports = new List<Report>();
+
+           
+            foreach (Report report in reportList)
+            {
+                if (report.ConsultantId.Equals(User.Identity.Name) && report.Status == status)
+                {
+                    filteredReports.Add(report);
+                }
+            }
+            return View("Index",filteredReports);
+        }
     }
+
 }

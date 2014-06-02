@@ -113,6 +113,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLogic\DepartmentLogicTest.cs" />
+    <Compile Include="BusinessLogic\DepartmentSupervisorLogicTest.cs" />
+    <Compile Include="BusinessLogic\ReportLogicTest.cs" />
+    <Compile Include="BusinessLogic\AccountStaffLogicTest.cs" />
     <Compile Include="Controllers\ReportControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />

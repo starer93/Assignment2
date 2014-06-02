@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Assignment_2.Models;
 using Assignment_2.SAL;
+using Assignment_2.Business_Logic;
 
 namespace Assignment_2.Controllers
 {
@@ -71,13 +73,14 @@ namespace Assignment_2.Controllers
             {
                 return HttpNotFound();
             }
+            
+            if (User!=null&&User.IsInRole("Department Supervisor"))
+            {
+                DepartmentSupervisorLogic departmentSupervisor = new DepartmentSupervisorLogic(User.Identity.Name);
+                ViewBag.IsOverBudget = departmentSupervisor.Department.willBeOverBudget(new ReportLogic(report));
+            }
+            //checkoverbudget
             return View(report);
-        }
-
-        //(b)downloads receipt from reports.Receipt
-        public ActionResult ShowReceipt()
-        {
-            return View();
         }
 
         //(c)used by all users if they want to return to their base index
@@ -109,6 +112,21 @@ namespace Assignment_2.Controllers
         {
             reportDataAccess.Dispose();
             base.Dispose(disposing);
+        }
+
+        [HttpGet]
+        public FileStreamResult ViewReceipt(int id)
+        {
+            MemoryStream ms = new MemoryStream();
+
+            byte[] pdf = reportDataAccess.FindReportByPrimaryKey(id).Receipt;
+            ms.Write(pdf, 0, pdf.Length);
+            ms.Position = 0;
+            Stream fileStream = ms;
+            HttpContext.Response.AddHeader("content-disposition",
+            "attachment; filename=Receipt.pdf");
+
+            return new FileStreamResult(fileStream, "application/pdf");
         }
 
     }

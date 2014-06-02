@@ -14,21 +14,40 @@ namespace Assignment_2.Business_Logic
         private const double MONTHLY_BUDGET = 10000;
         private double remainingBudget = 0;
         public List<ReportLogic> Reports { get; private set; }
+        private IReportDataAccess reportDataAccess;
 
         public DepartmentLogic(string departmentName)
         {
             Reports = new List<ReportLogic>();
             Name = departmentName;
-            loadReports();
+            reportDataAccess = new SqlReportDataAccess();
+            UsersContext usersContext = new UsersContext();
+            List<UserProfile> users = usersContext.UserProfiles.ToList();
+            loadReports(users);
         }
 
-        private void loadReports()
-        {
-            UsersContext userContext = new UsersContext();
-            IReportDataAccess reportDataAccess = new SqlReportDataAccess();
+        #region MockLogic
 
+        public DepartmentLogic(string departmentName, IReportDataAccess reportDataAccess)
+        {         
+            Reports = new List<ReportLogic>();
+            Name = departmentName;
+            List<UserProfile> users = new List<UserProfile>();
+            UserProfile user = new UserProfile();
+            user.Department = "Higher Education Services";
+            user.Role = "Consultant";
+            user.UserId = 1;
+            user.UserName = "125";
+            this.reportDataAccess = reportDataAccess;
+            users.Add(user);
+            loadReports(users);
+        }
+
+        #endregion
+
+        private void loadReports(List<UserProfile> users)
+        {
             List<Report> reportModels = reportDataAccess.GetAllReports();
-            List<UserProfile> users = userContext.UserProfiles.ToList();
             foreach (Report report in reportModels)
             {
                 string consultantID = report.ConsultantId;
@@ -44,12 +63,15 @@ namespace Assignment_2.Business_Logic
                 }
             }
         }
+    
 
+        //?????
         public double getTotalBudget()
         {
             return MONTHLY_BUDGET;
         }
 
+        //??????
         public double TotalExpense()
         {
             double sum = 0;
@@ -83,27 +105,28 @@ namespace Assignment_2.Business_Logic
 
         //Report filters --------------------------------
 
-        public List<ReportLogic> getDepartmentReports(string month, string year, string status)
+        public List<Report> getDepartmentReports(string status)
         {
-            List<ReportLogic> newReports = new List<ReportLogic>();
+            List<Report> reports = new List<Report>();
+
             foreach (ReportLogic report in Reports)
             {
                 if (report.ReportModel.Status == status)
                 {
-                    newReports.Add(report);
+                    reports.Add(report.ReportModel);
                 }
             }
-            return newReports;
+            return reports;
         }
 
-        public List<ReportLogic> getDepartmentReports(string month, string year)
+        public List<Report> getDepartmentReports()
         {
-            List<ReportLogic> newReports = new List<ReportLogic>();
+            List<Report> newReports = new List<Report>();
             foreach (ReportLogic report in Reports)
             {
                 if (IsSubmittedOrRejected(report))
                 {
-                    newReports.Add(report);
+                    newReports.Add(report.ReportModel);
                 }
             }
             return newReports;
@@ -111,7 +134,7 @@ namespace Assignment_2.Business_Logic
 
         public bool willBeOverBudget(ReportLogic report)
         {
-            return remainingBudget < report.calculateExpenses();
+            return getRemainingBudget() < report.calculateExpenses();
         }
     }
 }

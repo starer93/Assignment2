@@ -13,6 +13,14 @@
 
 <table>
     <tr>
+        <th> @Html.ActionLink("All Reports", "Index")</th>
+        <th> @Html.ActionLink("Department Supervisor Approved Report", "FilterReport", "Consultant", new { status = "ApprovedByDepartmentSupervisor" }, null)</th>
+        <th> @Html.ActionLink("Account Staff Approved Report", "FilterReport", "Consultant", new { status = "ApprovedByAccountStaff" },null)</th>
+        <th> @Html.ActionLink("Pending Reports", "FilterReport", "Consultant", new { status = "SubmittedByConsultant" }, null)</th>
+     </tr>
+</table>
+<table>
+    <tr>
         <th>
             @Html.DisplayNameFor(model => model.Id)
         </th>
@@ -21,9 +29,6 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Receipt)
         </th>
     </tr>
 
@@ -38,17 +43,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Date)
-        </td>
-        <td>
-            @if (item.Receipt != null)
-            {
-                //@Html.DisplayFor(modelItem => item.Receipt)
-                <b>True</b>
-            }
-            else
-            {
-                <b>False</b>
-            }
         </td>
         <td>
             @Html.ActionLink("Details", "Details", "Report", new { id = item.Id }, null)

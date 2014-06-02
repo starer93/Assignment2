@@ -24,7 +24,7 @@ namespace Assignment_2.Controllers
         // POST: /Expense/Create
         //adding expenses to the temporary currentExpense list
         [HttpPost]
-        public ActionResult Create(Expense expense)
+        public ActionResult Create(Expense expense, string currency)
         {
             //temporary holder for expenses
             List<Expense> currentExpenses = new List<Expense>();
@@ -32,15 +32,18 @@ namespace Assignment_2.Controllers
             if (ModelState.IsValid)
             {
                 //if any reports exist, get last id and add 1
-                if (reportDataAccess.GetAllReports().Count() > 0)
+                expense.ReportId = SetReportId(expense);
+
+                switch (currency)
                 {
-                    Report report = reportDataAccess.GetAllReports().Last();
-                    expense.ReportId = report.Id + 1;
-                }
-                else
-                {
-                    //otherwise this is the first report
-                    expense.ReportId = 1;
+                    case "CNY" :
+                        expense.Amount *= 0.17;
+                        break;
+                    case "EUR" :
+                        expense.Amount *= 1.47;
+                        break;
+                    default :
+                        break;
                 }
 
                 //if expense list new, store in session
@@ -69,6 +72,20 @@ namespace Assignment_2.Controllers
 
             //reportDataAccess.AddExpense(expense);
             //reportDataAccess.SaveChanges();
+        }
+
+        private int SetReportId(Expense expense)
+        {
+            if (reportDataAccess.GetAllReports().Count() > 0)
+            {
+                Report report = reportDataAccess.GetAllReports().Last();
+                return report.Id + 1;
+            }
+            else
+            {
+                //otherwise this is the first report
+                return 1;
+            }
         }
 
     }

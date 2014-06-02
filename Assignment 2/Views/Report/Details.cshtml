@@ -16,7 +16,7 @@
             <b>Status</b>
         </th>
         <th>
-            <b>Date</b>
+            <b>Submmitted Date</b>
         </th>
         <th>
             <b>Receipt</b>
@@ -34,7 +34,14 @@
              @Html.DisplayFor(model => model.Date)
         </td>
         <td>
-             @Html.ActionLink("Show Receipt", "ShowReceipt");
+            @if (Model.Receipt != null)
+            {
+                @Html.ActionLink("download Receipt", "ViewReceipt", "Report", new { id = Model.Id }, null)
+            }
+            else
+            {
+                <b>No receipt available</b>
+            }
         </td>
     </tr>
 </table>
@@ -77,3 +84,57 @@
 <p>
     @Html.ActionLink("Back to List", "ReturnToCorrectIndex")
 </p>
+
+@if (User.IsInRole("Department Supervisor"))
+{
+    using (Html.BeginForm("Approve", "DepartmentSupervisor", new { id = Model.Id }, FormMethod.Post, new { EncType = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+         @Html.ValidationSummary(true)
+     <p>
+         <!-- cant approve over budget? -->
+             <input type="submit" value="Approve" />
+     </p>
+    }
+
+    using (Html.BeginForm("Reject", "DepartmentSupervisor", new { id = Model.Id }, FormMethod.Post, new { EncType = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+         @Html.ValidationSummary(true)
+     <p>
+             <input type="submit" value="Reject" />
+     </p>
+    }
+    
+    if (ViewBag.IsOverBudget)
+    {
+        <b>This report will make your department overbudget</b>
+    }
+    else 
+    {
+        <!-- get current budget for more info -->
+        <p>This report will NOT make your department overbudget</p>
+    }
+}
+
+@if (User.IsInRole("Account Staff"))
+{
+    using (Html.BeginForm("Approve", "AccountStaff", new { id = Model.Id }, FormMethod.Post, new { EncType = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+         @Html.ValidationSummary(true)
+     <p>
+         <!-- cant approve over budget? -->
+             <input type="submit" value="Approve" />
+     </p>
+    }
+
+    using (Html.BeginForm("Reject", "AccountStaff", new { id = Model.Id }, FormMethod.Post, new { EncType = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+         @Html.ValidationSummary(true)
+     <p>
+             <input type="submit" value="Reject" />
+     </p>
+    }
+}

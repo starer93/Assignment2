@@ -182,6 +182,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Business Logic\AccountStaffLogic.cs" />
+    <Compile Include="Business Logic\CustomDateValidation.cs" />
     <Compile Include="Business Logic\DepartmentLogic.cs" />
     <Compile Include="Business Logic\DepartmentSupervisorLogic.cs" />
     <Compile Include="Business Logic\ReportLogic.cs" />
@@ -321,10 +322,10 @@
     <Content Include="Views\Report\Details.cshtml" />
     <Content Include="Views\Report\Create.cshtml" />
     <Content Include="Views\Consultant\Index.cshtml" />
-    <Content Include="Views\AccountStaff\Index.cshtml" />
+    <Content Include="Views\AccountStaff\ViewReports.cshtml" />
     <Content Include="Views\DepartmentSupervisor\Index.cshtml" />
     <Content Include="Views\Report\AttachReceipt.cshtml" />
-    <Content Include="Views\AccountStaff\CompanyDetail.cshtml" />
+    <Content Include="Views\AccountStaff\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
